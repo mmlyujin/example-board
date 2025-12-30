@@ -1,35 +1,55 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from 'axios'
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [title, setTitle] = useState('')
+    const [content, setContent] = useState('')
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // 페이지 새로고침 방지
+
+        try {
+            /*TODO::
+            *  url 상수로 빼기(config)
+            *  axios를 함수로 빼기
+            *  axiosInstance 활용하기
+            * */
+            // Laravel의 store 창구로 JSON 데이터 전달
+            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
+                title: title,
+                content: content,
+                user_id: 1 // 임시
+            });
+
+            console.log("서버 응답:", response.data);
+            alert("글 저장 성공!");
+            setTitle(''); // 입력창 비우기
+            setContent('');
+        } catch (error) {
+            console.error("에러 발생:", error);
+            alert("저장 실패! 터미널이나 콘솔을 확인하세요.");
+        }
+    }
+
+    return (
+        <div style={{ padding: '20px' }}>
+            <h1>Board</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="제목"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                /><br /><br />
+                <textarea
+                    placeholder="내용"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                ></textarea><br /><br />
+                <button type="submit">글 올리기</button>
+            </form>
+        </div>
+    )
 }
 
 export default App

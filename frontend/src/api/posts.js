@@ -19,7 +19,7 @@ export const getPosts = async (params)=> {
 
 // 보통 id를 url 뒤에 붙이는 것이 정석
 //RESTful API 표준 : Delete /api/posts/1
-export const deletePosts = async (postId)=> {
+export const deletePost = async (postId)=> {
     const response = await axiosInstance.delete(`/api/posts/${postId}`);
     return response.data;
 }

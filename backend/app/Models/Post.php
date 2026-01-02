@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     // 여기에 적힌 컬럼만 DB에 한꺼번에 저장할 수 있다.
-    protected $fillable = ['title','content','user_id'];
+    protected $fillable = [
+        'title',
+        'content',
+        'user_id'];
 }

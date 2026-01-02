@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import {createPost} from "./api/posts.js";
 
 function App() {
     const [title, setTitle] = useState('')
@@ -9,24 +9,21 @@ function App() {
         e.preventDefault(); // 페이지 새로고침 방지
 
         try {
-            /*TODO::
-            *  url 상수로 빼기(config)
-            *  axios를 함수로 빼기
-            *  axiosInstance 활용하기
-            * */
-            // Laravel의 store 창구로 JSON 데이터 전달
-            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
-                title: title,
-                content: content,
-                user_id: 1 // 임시
-            });
+            const postData = {
+                title:title,
+                content:content,
+                user_id:1
+            }
 
-            console.log("서버 응답:", response.data);
+            // 글 만들어주는 함수 부르면 끝
+            const result = await createPost(postData);
+
+            console.log("서버 응답:", result);
             alert("글 저장 성공!");
             setTitle(''); // 입력창 비우기
-            setContent('');
+            setContent(''); // 입력창 비우기
         } catch (error) {
-            console.error("에러 발생:", error);
+            console.error("저장 실패:", error);
             alert("저장 실패! 터미널이나 콘솔을 확인하세요.");
         }
     }
